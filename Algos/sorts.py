@@ -16,12 +16,22 @@ def bubble_sort(arr):
 def mergesort(arr):
 
 	if len(arr) == 1:
-		print(arr)
 		return arr
-	
-	mid = len(arr) // 2
-	
-	mergesort(arr[:mid+1])
-	mergesort(arr[mid+1:])
 
+	else:
 
+		mid = len(arr) // 2
+		return merge(mergesort(arr[:mid]), mergesort(arr[mid:]))
+
+def merge(left_half, right_half):
+	n = len(left_half)
+	m = len(right_half)	
+	if n == 1 and m == 1:
+		if left_half[0] > right_half[0]:
+			return right_half + left_half
+		return left_half + right_half
+
+	elif n == 1:
+		for i in range(m):
+			if right_half[i] > left_half[0]:
+				return right_half[:i]

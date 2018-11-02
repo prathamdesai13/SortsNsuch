@@ -1,7 +1,7 @@
-from sorts import *
+from Algos import sorts
 
 if __name__ == '__main__':
 	
 	arr = [7, 8, 12, 2, 4, 3, 9]
-	mergesort(arr)
+	print(sorts.mergesort(arr))
 

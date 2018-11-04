@@ -45,10 +45,27 @@ def merge_sort(arr):
     mid = (len(arr) - 1)// 2
     return merge(mergesort(arr[:mid]), mergesort(arr[mid:]))
 
+def quick_sort(arr):
+
+    pivot = len(arr) - 1 # pick pivot at end of array
+    if pivot == -1 or pivot == 0:
+        return arr
+    left_half = []
+    right_half = []
+    for i in range(len(arr)):
+        if i != pivot:
+            if arr[i] <= arr[pivot]:
+                left_half.append(arr[i])
+            else:
+                right_half.append(arr[i])
+    # print("left:", left_half)
+    # print("right:", right_half)
+    return quick_sort(left_half) + arr[pivot: pivot + 1] + quick_sort(right_half)
+    
 
 def merge(left_half, right_half):
-    print("left:", left_half)
-    print("right:", right_half)
+    # print("left:", left_half)
+    # print("right:", right_half)
     n = len(left_half)
     m = len(right_half)
     i = 0

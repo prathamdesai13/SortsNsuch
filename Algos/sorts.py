@@ -8,17 +8,30 @@ def swap(arr, i, j):
 def bubble_sort(arr):
     
     for i in range(len(arr)):
-        print(arr)
-        for j in range(i):
-            if arr[i]  < arr[j]:
-                swap(arr, i, j)
+        # print(arr)
+        for j in range(len(arr) - i - 1):
+            if arr[j] > arr[j + 1]:
+                swap(arr, j, j+1)
     return arr
+
+def recursive_bubble_sort(arr):
+    # each run through of bubble sort sends the biggest element to the end, or as close to the end as possible
+    # so on each loop, once it gets sent to the end, recurse on arr[0, 1, 2, ..., n - 2] and then append 
+    # largest element already sent to back at the end
+    # still as slow lol
+    if len(arr) == 1:
+        return arr
+    
+    for i in range(len(arr) - 1):
+        if arr[i] > arr[i + 1]:
+            swap(arr, i, i + 1)
+    return recursive_bubble_sort(arr[:len(arr) - 1]) + arr[len(arr) - 1:]
 
 def insertion_sort(arr):
     # basically bubble sort
     sorted = [x for x in arr]
     for i in range(1, len(arr)):
-        print(sorted)
+        # print(sorted)
         for j in range(i):
             if (arr[i] < sorted[j]):
                 swap(sorted, i, j)

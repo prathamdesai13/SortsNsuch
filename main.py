@@ -2,6 +2,6 @@ from Algos import sorts
 
 if __name__ == '__main__':
 	
-	arr = [12, 11, 13, 5, 6]
-	print(sorts.bubble_sort(arr))
+	arr = [1, 5, 3, 88, 9, 10]
+	print(sorts.recursive_bubble_sort(arr))
 

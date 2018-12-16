@@ -47,7 +47,7 @@ def merge_sort(arr):
 
 def quick_sort(arr):
 
-    pivot = len(arr) - 1 # pick pivot at end of array
+    pivot = (len(arr)) // 2 # pick pivot at midpoint of array
     if pivot == -1 or pivot == 0:
         return arr
     left_half = []

@@ -91,5 +91,14 @@ def getWays(n, c):
     we use DP to make it more efficient
     """
     d = {}
-
+    
     return getWays(n, c[:-1], d) + getWays(n - c[-1], c, d)
+
+def matchingStrings(strings, queries):
+    freq = Counter(strings)
+    print(freq)
+    count = [0] * len(queries)
+    for i, q in enumerate(queries):
+        if q in freq.keys():
+            count[i] += freq[q]
+    return count

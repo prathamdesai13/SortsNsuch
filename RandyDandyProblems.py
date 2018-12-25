@@ -1,4 +1,7 @@
 from collections import Counter
+from DataStructs.MinHeap import MinHeap
+from Algos.sorts import mergesort
+from operator import itemgetter
 
 def factorialBottomUp(n):
 
@@ -9,8 +12,7 @@ def factorialBottomUp(n):
     return d[n]
 
 def swap(arr, i, j):
-    temp = arr[i]
-    arr[i], arr[j] = arr[j], temp
+    arr[i], arr[j] = arr[j], arr[i]
 
 def minimumBribes(q):
     n = len(q)
@@ -91,7 +93,7 @@ def getWays(n, c):
     we use DP to make it more efficient
     """
     d = {}
-    
+
     return getWays(n, c[:-1], d) + getWays(n - c[-1], c, d)
 
 def matchingStrings(strings, queries):
@@ -102,3 +104,123 @@ def matchingStrings(strings, queries):
         if q in freq.keys():
             count[i] += freq[q]
     return count
+
+def minMaxRiddle(arr):
+    """
+    Given an integer array of size n, find the maximum of the minimums of 
+    every window size in the array, with window sizes ranging from 1 to n.
+    Ex. arr = [6, 3, 5, 1, 12], n = len(arr) = 5
+    Window size 1: (6), (3), (5), (1), (12) => max = 12
+    Window size 2: (6, 3), (3, 5), (5, 1), (1, 12) => max = 3
+    Window size 3: (6, 3, 5), (3, 5, 1), (5, 1, 12) => max = 3
+    Window size 4: (6, 3, 5, 1), (3, 5, 1, 12) => max = 1
+    Window size 5: (6, 3, 5, 1, 12) => max = 1
+    """
+    # the most brutal brute force can get, i think cubic time:
+    n = len(arr)
+    window_maxs = []
+    for w in range(1, n + 1):
+        window_mins = []
+        for i in range(n - w + 1):
+            window = arr[i : i + w]
+            window_mins.append(min(window))
+        window_maxs.append(max(window_mins))
+    return window_maxs
+def pairs(k, arr):
+    """
+    return number of pairs of numbers in integer array arr
+    that have a difference of k
+    """
+    # brute force solution:
+    # pairs = 0
+    # n = len(arr)
+    # for i in range(n):
+    #     for j in range(i + 1, n):
+    #         if abs(arr[i] - arr[j]) == k:
+    #             pairs += 1
+    # return pairs
+    
+    # efficient solution:
+
+    pairs = 0
+    arr = mergesort(arr)
+
+    j = 0
+    i = 1
+    while i < len(arr):
+        diff = arr[i] - arr[j]
+
+        if diff > k:
+            j += 1
+        elif diff == k:
+            i += 1
+            pairs += 1
+        else:
+            i += 1
+    return pairs
+
+def luck_balance(k, contests):
+    # some hackerrank problem on luck (greedy i think)
+    # contests is a list of integer tuples and k is some int
+    # using min heap, quadratic time:
+    # total_luck = 0
+    # k_heap = MinHeap()
+    # for pair in contests:
+    #     if pair[1] == 1:
+    #         k_heap.insert(pair[0])
+    # k_heap.heapify()
+    # while len(k_heap.tree) - 1 > k:
+    #     k_heap.delete_min()
+    # for pair in contests:
+    #     if pair[1] == 0:
+    #         total_luck += pair[0]
+    #     else:
+    #         if pair[0] in k_heap.tree:
+    #             total_luck += pair[0]
+    #         else:
+    #             total_luck -= pair[0]
+    # return total_luck
+    
+    # using itemgetter, nlogn + n time
+    total_luck = 0
+    contests = sorted(contests, key=itemgetter(0))
+    for pair in reversed(contests):
+        luck, importance = pair
+        if importance == 0:
+            total_luck += luck
+        else:
+            if k > 0:
+                total_luck += luck
+                k -= 1
+            else:
+                total_luck -= luck
+    return total_luck
+
+def minimum_swaps(arr):
+    """
+    Given an unordered array of size n with elements in 
+    [1, 2, ..., n] with no duplicates, return the minimum
+    number of swaps required to go from the unordered array
+    to an ordered array.
+    Ex. [7, 1, 3, 2, 4, 5, 6]
+    => Swap (0, 3) : [2, 1, 3, 7, 4, 5, 6]
+    => Swap (0, 1) : [1, 2, 3, 7, 4, 5, 6]
+    => Swap (3, 4) : [1, 2, 3, 4, 7, 5, 6]
+    => Swap (4, 5) : [1, 2, 3, 4, 5, 7, 6]
+    => Swap (5, 6) : [1, 2, 3, 4, 5, 6, 7]
+    5 total swaps took place to order the array
+    """
+    # linear time, fastest solution i think
+    i = 0
+    n = len(arr)
+    num_swaps = 0
+    while i < n:
+        x = arr[i]
+        og_index = x - 1
+        if i != og_index:
+            swap(arr, i, og_index)
+            print("Swap:({}, {})".format(i, og_index))
+            num_swaps += 1
+        else:
+            i += 1
+    return num_swaps

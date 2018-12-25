@@ -4,15 +4,10 @@ from AdjacencyMatrix import AdjacencyMatrix
 from BinaryTree import BinaryTree
 from BinarySearchTree import BST
 from MinHeap import MinHeap
+from Stack import Stack
+from Queue import Queue
+from LinkedList import LinkedList
 
 if __name__ == '__main__':
 
-    heap = MinHeap()
-    heap.insert(6)
-    heap.insert(7)
-    heap.insert(12)
-    heap.insert(17)
-    heap.insert(5)
-    print(heap.tree)
-    print(heap.delete_min())
-    print(heap.tree)
+    pass

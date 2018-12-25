@@ -34,7 +34,7 @@ class MinHeap:
         self.heapify(1)
         return min_val
         
-    def heapify(self, index):
+    def heapify(self, index=1):
         
         root = self.tree[index]
         left = self.tree[2 * index]

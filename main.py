@@ -1,19 +1,16 @@
 from Algos import sorts
 from random import random
 from RandyDandyProblems import *
-from DataStructs.Stack import Stack
+
 if __name__ == '__main__':
 	
-	s = Stack()
-	s.display()
-	s.push(10)
-	s.push(20)
-	s.display()
-	print(s.size())
-	x = s.pop()
-	print(s.size())
-	s.display()
-	print(x)
-	s.pop()
-	s.display()
-	s.pop()
+	# contests = [(5, 1), (2, 1), (1, 1), (8, 1), (10, 0), (5, 0)]
+	# k = 3
+	# print(luck_balance(k, contests))
+
+	arr = [6, 3, 5, 1, 12]
+	print(minMaxRiddle(arr))
+
+	
+
+	

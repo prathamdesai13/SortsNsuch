@@ -8,9 +8,16 @@ if __name__ == '__main__':
 	# k = 3
 	# print(luck_balance(k, contests))
 
-	arr = [6, 3, 5, 1, 12]
-	print(minMaxRiddle(arr))
+	# arr = [1, 2, 3, 5, 1, 13, 3]
+	# print(minMaxRiddle(arr))
 
+	# s1 = 'fcrxzwscanmligyxyvym'
+	# s2 = 'jxwtrhvujlmrpdoqbisbwhmgpmeoke'
+	# print(makeAnagrams(s1, s2))
+
+	s = 'ABBBA'
+	print(len(s))
+	print(alternatingCharacters(s))
 	
 
 	

@@ -117,15 +117,31 @@ def minMaxRiddle(arr):
     Window size 5: (6, 3, 5, 1, 12) => max = 1
     """
     # the most brutal brute force can get, i think cubic time:
+    # n = len(arr)
+    # window_maxs = []
+    # for w in range(1, n + 1):
+    #     window_max = 0
+    #     for i in range(n - w + 1):
+    #         window = arr[i : i + w]
+    #         window_min = min(window)
+    #         if window_min > window_max:
+    #             window_max = window_min
+    #     window_maxs.append(window_max)
+    # return window_maxs
+
+    # little better, quyadratic time
     n = len(arr)
-    window_maxs = []
-    for w in range(1, n + 1):
-        window_mins = []
-        for i in range(n - w + 1):
-            window = arr[i : i + w]
-            window_mins.append(min(window))
-        window_maxs.append(max(window_mins))
-    return window_maxs
+    mins = [[0 for _ in range(n)] for _ in range(n)]
+    mins[0] = arr
+    maxes = [max(mins[0])]
+    for i in range(1, n):
+        curr_max = 0
+        for j in range(n - i):
+            mins[i][j] = min(mins[i - 1][j], mins[i - 1][j + 1])
+            if mins[i][j] > curr_max:
+                curr_max = mins[i][j]
+        maxes.append(curr_max)
+    return maxes
 def pairs(k, arr):
     """
     return number of pairs of numbers in integer array arr
@@ -224,3 +240,59 @@ def minimum_swaps(arr):
         else:
             i += 1
     return num_swaps
+
+def makeAnagrams(s1, s2):
+    """
+    Given two strings, not necessarilly of equal length,
+    find minimum number of chars deleted from the strings
+    to make them anagrams.
+    Ex. s1 = 'cde', s2 = 'abc' => 4 removals : {'d', 'e', 'a', 'b'}
+    """
+    # f1 = dict(Counter(s1))
+    # f2 = dict(Counter(s2))
+    # all_chars = set(list(f1.keys()) + list(f2.keys()))
+    # count = 0
+    # for c in all_chars:
+    #     if c in f1 and c not in f2:
+    #         count += f1[c]
+    #     elif c not in f1 and c in f2:
+    #         count += f2[c]
+    #     else:
+    #         if f1[c] != f2[c]:
+    #             count += abs(f1[c] - f2[c])
+    # return count
+
+    # another sol:
+    all_chars = [0] * 26
+    for c in s1:
+        all_chars[ord(c) - ord('a')] += 1
+    
+    for c in s2:
+        all_chars[ord(c) - ord('a')] -= 1
+
+    count = 0
+    for i in range(26):
+        count += abs(all_chars[i])
+
+    return count
+
+def alternatingCharacters(s):
+    """
+    Given a string containing only A's and B's, find
+    minimum number of deletions of characters in the string
+    such that the final string has no matching adjacent chars.
+    Ex. AABAAB -> ABAAB -> ABAB => 2 deletions
+    """
+    i = 0
+    count = 0
+    while i < len(s):
+        j = i + 1
+        c = s[i]
+        mini_count = 0
+        while j < len(s) and s[j] == c:
+            j += 1
+            mini_count += 1
+        count += mini_count
+        s = s[:i + 1] + s[j:]
+        i = j - mini_count
+    return count

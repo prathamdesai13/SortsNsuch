@@ -6,16 +6,22 @@ class BST:
         self.left = None
         self.right = None
 
-    def __insert__(self, data):
+    def insert(self, data):
 
         if data > self.data:
             if not self.right:
                 self.right = BST(data)
             else:
-                self.right.__insert__(data)
+                self.right.insert(data)
         else:
             if not self.left:
                 self.left = BST(data)
             else:
-                self.left.__insert__(data)
+                self.left.insert(data)
+
+    def delete(self, data):
+        pass
+
+    def search(self, data):
+        pass
     

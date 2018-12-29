@@ -1,4 +1,5 @@
-
+# bunch of sorting algorithms
+from DataStructs import MinHeap
 
 def swap(arr, i, j):
     temp = arr[i]
@@ -15,10 +16,11 @@ def bubble_sort(arr):
     return arr
 
 def recursive_bubble_sort(arr):
-    # each run through of bubble sort sends the biggest element to the end, or as close to the end as possible
-    # so on each loop, once it gets sent to the end, recurse on arr[0, 1, 2, ..., n - 2] and then append 
-    # largest element already sent to back at the end
-    # still as slow lol
+    """
+    comparing consecutive elements and swapping accordingly pushes the largest
+    element to the end, so we simply recurse on everything but the last element
+    time. still operates in quadratic time, but recursive bubble sort just sounds funny
+    """
     if len(arr) == 1:
         return arr
     
@@ -37,7 +39,7 @@ def insertion_sort(arr):
                 swap(sorted, i, j)
     return sorted
 
-def merge_sort(arr):
+def mergesort(arr):
     if len(arr) == 1:
         return arr
     if len(arr) == 2:
@@ -47,7 +49,7 @@ def merge_sort(arr):
 
 def quick_sort(arr):
 
-    pivot = len(arr) - 1 # pick pivot at end of array
+    pivot = (len(arr)) // 2 # pick pivot at midpoint of array
     if pivot == -1 or pivot == 0:
         return arr
     left_half = []
@@ -88,3 +90,9 @@ def merge(left_half, right_half):
         j += 1
 
     return merged
+
+def heapsort(arr):
+    """
+    use a min heap to sort the elements of an array
+    """
+    pass

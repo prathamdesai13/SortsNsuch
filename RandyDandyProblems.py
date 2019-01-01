@@ -2,6 +2,8 @@ from collections import Counter
 from DataStructs.MinHeap import MinHeap
 from Algos.sorts import mergesort
 from operator import itemgetter
+from DataStructs.LinkedList import LinkedList
+from DataStructs.BinarySearchTree import BST
 
 def factorialBottomUp(n):
 
@@ -283,16 +285,203 @@ def alternatingCharacters(s):
     such that the final string has no matching adjacent chars.
     Ex. AABAAB -> ABAAB -> ABAB => 2 deletions
     """
-    i = 0
+    pass
+
+def sherlockIsValid(s):
+    """
+    A string s is considered valid iff all the chars in s appear
+    the same number of times or it is possible to remove one char
+    at one index in s and then all the chars appear the same number
+    of times.
+    Ex. s = 'abc' => {a : 1, b : 1, c : 1} => s is valid
+    """
+    freq = {}
+    
+    for c in s:
+        if c in freq:
+            freq[c] += 1
+        else:
+            freq[c] = 1
+
+    m = min(freq.values())
+    M = max(freq.values())
+
+    # all chars appear the same amount of times
+    if m == M:
+        return 'YES'
+    else:
+
+        num_min = num_max = 0
+        
+        for c in freq:
+            if freq[c] == m:
+                num_min += 1
+            elif freq[c] == M:
+                num_max += 1
+            else:
+                return 'NO'
+
+        if num_max == 1 and M - m == 1:
+            return 'YES'
+        elif num_min == 1 and m == 1:
+            return 'YES'
+
+        return 'NO'
+
+
+    
+    
+
+def specialPalindromeSubstrings(n, s):
+    """
+    String is said to be special palindromic if either of 2 conditions
+    are met:
+    1) all characters in string are the same
+    2) all characters except the middle one are the same
+    a special palindromic substring is any substring that is 
+    a special palindromic string. Return total number
+    of special palindromic strings in string s of length n
+    """
+    # brute force: cubic
     count = 0
-    while i < len(s):
-        j = i + 1
-        c = s[i]
-        mini_count = 0
-        while j < len(s) and s[j] == c:
-            j += 1
-            mini_count += 1
-        count += mini_count
-        s = s[:i + 1] + s[j:]
-        i = j - mini_count
+    subs = []
+
+    def check_all_and_middle(s):
+        if len(s) % 2 == 0:
+            c = s[0]
+            for cc in s[1:]:
+                if c != cc:
+                    return False
+            return True
+        else:
+            c = s[0]
+            mid = (len(s) - 1) // 2
+            for i in range(len(s)):
+                if i != mid and c != s[i]:
+                    return False
+            return True
+
+    for num_chars in range(1, n + 1):
+        for i in range(n - num_chars + 1):
+            flag = True
+            substring = s[i : i + num_chars]
+            if check_all_and_middle(substring):
+                count += 1
+                subs.append(substring)
+    
+    print(subs)
     return count
+
+
+def twoSum(nums, target):
+    """
+    given a list of numbers, return the indices of the
+    numbers(distinct) that sum to target value
+    """
+    # brute force (quadratic)
+    # for i in range(len(nums)):
+    #     for j in range(i + 1, len(nums)):
+    #         if nums[i] + nums[j] == target:
+    #             return [i, j]
+    # return None
+
+    # not brute force: (nlogn + n)
+    # num_tups = [(nums[i], i) for i in range(len(nums))]
+    # num_tups = sorted(num_tups, key= lambda x : x[0])
+    # low = 0
+    # high = len(num_tups) - 1
+
+    # while low < high:
+
+    #     s = num_tups[low][0] + num_tups[high][0]
+
+    #     if s < target:
+    #         low += 1
+    #     elif s > target:
+    #         high -= 1
+    #     else:
+    #         return [num_tups[low][1], num_tups[high][1]]
+    # return None
+
+    # better not brute force (linear)
+    indices = {nums[i] : i for i in range(len(nums))}
+    for i, nums in enumerate(nums):
+        diff = target - nums
+        if diff in indices:
+            if i != indices[diff]:
+                return [i, indices[diff]]
+    return None
+
+def whatFlavors(cost, money):
+    """
+    given amount of money you have, and the cost of flavours
+    of ice cream, return ID's of flavours.
+    Ex. money = 5, cost = [2, 1, 3, 5, 6]
+    => ID's 1 and 3 : 2 + 3 = 5
+    """
+    # quadratic 
+    ids = {}
+    for i, c in enumerate(cost):
+        if c in ids:
+            ids[c].append(i + 1)
+        else:
+            ids[c] = [i + 1]
+    print(ids)
+    for i, c in enumerate(cost):
+        diff = money - c
+        if diff in ids:
+            index = 0
+            for j in ids[diff]:
+                if j != i + 1:
+                    index = j
+            return (i + 1, index) if (i + 1) < index else (index, i + 1)
+    return None
+
+def triplets(a, b, c):
+    """
+    Gievn arrays a, b, c, find all triplets (p, q, r) with
+    p in a, q in b, r in c and p <= q and r <= q.
+    """
+
+    # extreme brute force (cubic)
+    triplets = []
+    for q in b:
+        for p in a:
+            if p <= q:
+                for r in c:
+                    if r <= q:
+                        triplets.append((p, q, r))
+    return len(triplets)
+
+
+def reverseLinkedList(linky):
+    """
+    Reverse a singly linked linked list
+    """
+    # way numero uno
+    pass
+
+def lowestCommonAncestor(root, u, v):
+    """
+    Find the lowest common ancestor to nodes u and v in bst
+    with root node at root
+    """
+
+    if u == root.data or v == root.data:
+        return root
+    elif u < root.data and v < root.data:
+        return lowestCommonAncestor(root.left, u, v)
+    elif u > root.data and v > root.data:
+        return lowestCommonAncestor(root.right, u, v)
+    else:
+        return root
+    return None
+
+
+def smalllestRectangles(points):
+    """
+    Given a list of 2D points, find the collection of 4 points
+    that result in the rectangle of smallest area in the grid
+    """
+    pass
+            

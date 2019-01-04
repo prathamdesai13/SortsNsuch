@@ -151,7 +151,27 @@ def weirdFib(t1, t2, n, memo=None):
         table[i] = table[i - 1] ** 2 + table[i - 2]
     return table[n - 1]
 
+def equal(arr):
 
+    first = arr[0]
+    flag = True
+    for e in arr[1:]:
+        if e != first:
+            flag = False
+            break
+    if flag:
+        return 0
+    s = 0
+    for i in range(len(arr)):
+        a = arr[i]
+        for j in range(i + 1, len(arr)):
+            b = arr[j]
+            arr1 = arr[:i] + [a + 1] + arr[i+1:j] + [b + 1] + arr[j + 1:]
+            arr2 = arr[:i] + [a + 2] + arr[i+1:j] + [b + 2] + arr[j + 1:]
+            arr5 = arr[:i] + [a + 5] + arr[i+1:j] + [b + 5] + arr[j + 1:]
+            print(arr1, arr2, arr5)
+            s += 1 + min(equal(arr1), equal(arr2), equal(arr5))
+    return s
 def maxSubsetSum(arr):
     """
     Find the subset of non adjacent elements of given array
@@ -503,14 +523,17 @@ def triplets(a, b, c):
     """
 
     # extreme brute force (cubic)
-    triplets = []
-    for q in b:
+    triplets = {q : set() for q in b}
+    num_trips = 0
+    for q in triplets:
         for p in a:
             if p <= q:
                 for r in c:
                     if r <= q:
-                        triplets.append((p, q, r))
-    return len(triplets)
+                        triplets[q].add((p, q, r))
+        num_trips += len(triplets[q])
+    # print(triplets)
+    return num_trips
 
 
 def reverseLinkedList(linky):

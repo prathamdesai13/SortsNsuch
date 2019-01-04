@@ -18,15 +18,7 @@ def func1(t1, t2, n):
 if __name__ == '__main__':
 	
 	
-	t1 = 0
-	t2 = 1
-	n = 28
-	start_time = time.time()
-	weirdFib(t1, t2, n)
-	
-	second_time = time.time()
-	print(second_time - start_time)
-	for i in range(1, n + 1):
-		func1(t1, t2, i)
-	third_time = time.time()
-	print(third_time - second_time)
+	a = [1, 4, 5]
+	b = [2, 3, 3]
+	c = [1, 2, 3]
+	print(triplets(a, b, c))

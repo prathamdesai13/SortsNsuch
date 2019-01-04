@@ -5,14 +5,6 @@ from operator import itemgetter
 from DataStructs.LinkedList import LinkedList
 from DataStructs.BinarySearchTree import BST
 
-def factorialBottomUp(n):
-
-    d = [1] * (n + 1)
-
-    for i in range(1, n + 1):
-        d[i] = d[i - 1] * i
-    return d[n]
-
 def swap(arr, i, j):
     arr[i], arr[j] = arr[j], arr[i]
 
@@ -94,10 +86,79 @@ def getWays(n, c):
     The recursive solution has too many overlapping function calls, so 
     we use DP to make it more efficient
     """
-    d = {}
+    # naive recursive method (exponential in len(c))
+    # if n < 0:
+    #     return 0
+    # elif n == 0:
+    #     return 1
+    # elif len(c) == 1:
+    #     if n != c[0]:
+    #         return 0
+    #     return 1
+    # return getWays(n - c[0], c) + getWays(n, c[1:])
 
-    return getWays(n, c[:-1], d) + getWays(n - c[-1], c, d)
+    # dynamic programming way (quadratic)
+    m = len(c)
+    table = [[0 for _ in range(m + 1)] for _ in range(n + 1)]
+    table[0] = [1] * (m + 1)
+    
+    for i in range(1, n + 1):
+        for j in range(m + 1):
+            if j == 0:
+                table[i][j] = 0
+            else:
+                if i - c[j - 1] < 0:
+                    table[i][j] = table[i][j - 1]
+                else:
+                    table[i][j] = table[i][j - 1] + table[i - c[j - 1]][j]
+    return table[n][m]
 
+def weirdFib(t1, t2, n, memo=None):
+    """
+    Given seed values t1, t2, find the nth weird fibonacci number
+    defined by t_n = t_(n - 2) + (t_(n - 1))^2
+    """
+    # naive recursive
+    # if n == 1:
+    #     return t1
+    # elif n == 2:
+    #     return t2
+
+    # a = weirdFib(t1, t2, n - 1) ** 2
+    # b = weirdFib(t1, t2, n - 2)
+    
+    # return a + b
+    
+    # dp 1
+    # if not memo:
+    #     memo = {1 : t1, 2 : t2}
+
+    # if n in memo:
+    #     return memo[n]
+
+    # if (n - 1) not in memo:
+    #     memo[n - 1] = weirdFib(t1, t2, n - 1, memo)
+    
+    # if (n - 2) not in memo:
+    #     memo[n - 2] = weirdFib(t1, t2, n - 2, memo)
+
+    # memo[n] = memo[n - 1] ** 2 + memo[n - 2]
+    # return memo[n]
+
+    # another dp (tableling)
+    table = {0 : t1, 1 : t2}
+    for i in range(2, n):
+        table[i] = table[i - 1] ** 2 + table[i - 2]
+    return table[n - 1]
+
+
+def maxSubsetSum(arr):
+    """
+    Find the subset of non adjacent elements of given array
+    which results in the maximum sum, and return the sum
+    """
+    pass
+    
 def matchingStrings(strings, queries):
     freq = Counter(strings)
     print(freq)
@@ -328,10 +389,6 @@ def sherlockIsValid(s):
 
         return 'NO'
 
-
-    
-    
-
 def specialPalindromeSubstrings(n, s):
     """
     String is said to be special palindromic if either of 2 conditions
@@ -343,34 +400,36 @@ def specialPalindromeSubstrings(n, s):
     of special palindromic strings in string s of length n
     """
     # brute force: cubic
-    count = 0
-    subs = []
+    # count = 0
+    # subs = []
 
-    def check_all_and_middle(s):
-        if len(s) % 2 == 0:
-            c = s[0]
-            for cc in s[1:]:
-                if c != cc:
-                    return False
-            return True
-        else:
-            c = s[0]
-            mid = (len(s) - 1) // 2
-            for i in range(len(s)):
-                if i != mid and c != s[i]:
-                    return False
-            return True
+    # def check_all_and_middle(s):
+    #     if len(s) % 2 == 0:
+    #         c = s[0]
+    #         for cc in s[1:]:
+    #             if c != cc:
+    #                 return False
+    #         return True
+    #     else:
+    #         c = s[0]
+    #         mid = (len(s) - 1) // 2
+    #         for i in range(len(s)):
+    #             if i != mid and c != s[i]:
+    #                 return False
+    #         return True
 
-    for num_chars in range(1, n + 1):
-        for i in range(n - num_chars + 1):
-            flag = True
-            substring = s[i : i + num_chars]
-            if check_all_and_middle(substring):
-                count += 1
-                subs.append(substring)
+    # for num_chars in range(1, n + 1):
+    #     for i in range(n - num_chars + 1):
+    #         flag = True
+    #         substring = s[i : i + num_chars]
+    #         if check_all_and_middle(substring):
+    #             count += 1
+    #             subs.append(substring)
     
-    print(subs)
-    return count
+    # print(subs)
+    # return count
+
+    # better solution:
 
 
 def twoSum(nums, target):

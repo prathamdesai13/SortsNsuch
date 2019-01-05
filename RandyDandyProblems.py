@@ -1,4 +1,5 @@
-from collections import Counter
+import math
+from collections import Counter, OrderedDict
 from Algos import swap
 from operator import itemgetter
 from DataStructs import LinkedList
@@ -518,19 +519,31 @@ def triplets(a, b, c):
     p in a, q in b, r in c and p <= q and r <= q.
     """
 
-    # extreme brute force (cubic)
-    triplets = {q : set() for q in b}
+    # using multiplication principle of disjoint events (quadratic)
+    
     num_trips = 0
-    for q in triplets:
-        for p in a:
-            if p <= q:
-                for r in c:
-                    if r <= q:
-                        triplets[q].add((p, q, r))
-        num_trips += len(triplets[q])
-    # print(triplets)
+    a.sort()
+    b.sort()
+    c.sort()
+    qs = OrderedDict()
+    for q in b:
+        if q not in qs:
+            qs[q] = True
+    
+    index_a = index_c = 0
+    for q in qs:
+        while index_a < len(a):
+            if a[index_a] <= q:
+                index_a += 1
+            else:
+                break
+        while index_c < len(c):
+            if c[index_c] <= q:
+                index_c += 1
+            else:
+                break
+        num_trips += index_a * index_c
     return num_trips
-
 
 def reverseLinkedList(linky):
     """

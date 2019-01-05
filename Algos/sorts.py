@@ -1,5 +1,4 @@
 # bunch of sorting algorithms
-from DataStructs import MinHeap
 
 def swap(arr, i, j):
     temp = arr[i]

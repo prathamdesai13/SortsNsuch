@@ -1,1 +1,2 @@
-__all__ = ["sorts", "search"]
+from sorts import *
+from search import *

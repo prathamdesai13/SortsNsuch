@@ -1,12 +1,8 @@
 from collections import Counter
-from DataStructs.MinHeap import MinHeap
-from Algos.sorts import mergesort
+from Algos import swap
 from operator import itemgetter
-from DataStructs.LinkedList import LinkedList
-from DataStructs.BinarySearchTree import BST
-
-def swap(arr, i, j):
-    arr[i], arr[j] = arr[j], arr[i]
+from DataStructs import LinkedList
+from DataStructs import BST
 
 def minimumBribes(q):
     n = len(q)

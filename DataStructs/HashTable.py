@@ -3,46 +3,52 @@
 
 class HashTable:
 
-    def __init__(self):
+    def __init__(self, size=100):
         
-        self.size = 100
+        self.size = size
         self.num_items = 0
-        self.table = [[]] * self.size
+        self.table = [[] for _ in range(self.size)]
 
     def load_factor(self):
 
-        return self.buckets_filled / self.size
+        return self.num_items / self.size
 
     def hash(self, val):
         
-        hash = 0
+        hash_code = 0
         for c in val:
-            hash += ord(c)
-        return hash % self.size
+            hash_code += ord(c)
+        return hash_code % self.size
 
-    def retrieve(self, index):
-        # doesnt even retive the value at index lol
-        if index < self.size:
-            return self.table[index]
-        print("This does not appear to be an index in this table!")
+    def retrieve(self, key):
+        index = self.hash(key)
+        collection = self.table[index]
+        for kv_pair in collection:
+            if kv_pair[0] == key:
+                return kv_pair[1]
+        print("There is no value associated with the key {}".format(key))
 
     def remove(self, index):
         
         # supposed to remove the value at index but idk man its late
+        pass
         
     def is_empty(self):
         
         return True if self.num_items == 0 else False
     
-    def insert(self, val):
+    def insert(self, key, val):
 
-        index = self.hash(val)
-        self.table[index].append(val)
+        index = self.hash(key)
+        self.table[index].append((key, val))
         self.num_items += 1
 
     def display(self):
 
-        print("Hash table is empty") if self.is_empty() else print(self.table)
+        if self.is_empty():
+            print("Hash table is empty!") 
+        else:
+            print(self.table)
 
     def clear(self):
 

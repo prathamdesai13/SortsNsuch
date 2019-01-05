@@ -2,14 +2,8 @@ from collections import Counter
 from DataStructs.MinHeap import MinHeap
 from Algos.sorts import mergesort
 from operator import itemgetter
-
-def factorialBottomUp(n):
-
-    d = [1] * (n + 1)
-
-    for i in range(1, n + 1):
-        d[i] = d[i - 1] * i
-    return d[n]
+from DataStructs.LinkedList import LinkedList
+from DataStructs.BinarySearchTree import BST
 
 def swap(arr, i, j):
     arr[i], arr[j] = arr[j], arr[i]
@@ -92,10 +86,99 @@ def getWays(n, c):
     The recursive solution has too many overlapping function calls, so 
     we use DP to make it more efficient
     """
-    d = {}
+    # naive recursive method (exponential in len(c))
+    # if n < 0:
+    #     return 0
+    # elif n == 0:
+    #     return 1
+    # elif len(c) == 1:
+    #     if n != c[0]:
+    #         return 0
+    #     return 1
+    # return getWays(n - c[0], c) + getWays(n, c[1:])
 
-    return getWays(n, c[:-1], d) + getWays(n - c[-1], c, d)
+    # dynamic programming way (quadratic)
+    m = len(c)
+    table = [[0 for _ in range(m + 1)] for _ in range(n + 1)]
+    table[0] = [1] * (m + 1)
+    
+    for i in range(1, n + 1):
+        for j in range(m + 1):
+            if j == 0:
+                table[i][j] = 0
+            else:
+                if i - c[j - 1] < 0:
+                    table[i][j] = table[i][j - 1]
+                else:
+                    table[i][j] = table[i][j - 1] + table[i - c[j - 1]][j]
+    return table[n][m]
 
+def weirdFib(t1, t2, n, memo=None):
+    """
+    Given seed values t1, t2, find the nth weird fibonacci number
+    defined by t_n = t_(n - 2) + (t_(n - 1))^2
+    """
+    # naive recursive
+    # if n == 1:
+    #     return t1
+    # elif n == 2:
+    #     return t2
+
+    # a = weirdFib(t1, t2, n - 1) ** 2
+    # b = weirdFib(t1, t2, n - 2)
+    
+    # return a + b
+    
+    # dp 1
+    # if not memo:
+    #     memo = {1 : t1, 2 : t2}
+
+    # if n in memo:
+    #     return memo[n]
+
+    # if (n - 1) not in memo:
+    #     memo[n - 1] = weirdFib(t1, t2, n - 1, memo)
+    
+    # if (n - 2) not in memo:
+    #     memo[n - 2] = weirdFib(t1, t2, n - 2, memo)
+
+    # memo[n] = memo[n - 1] ** 2 + memo[n - 2]
+    # return memo[n]
+
+    # another dp (tableling)
+    table = {0 : t1, 1 : t2}
+    for i in range(2, n):
+        table[i] = table[i - 1] ** 2 + table[i - 2]
+    return table[n - 1]
+
+def equal(arr):
+
+    first = arr[0]
+    flag = True
+    for e in arr[1:]:
+        if e != first:
+            flag = False
+            break
+    if flag:
+        return 0
+    s = 0
+    for i in range(len(arr)):
+        a = arr[i]
+        for j in range(i + 1, len(arr)):
+            b = arr[j]
+            arr1 = arr[:i] + [a + 1] + arr[i+1:j] + [b + 1] + arr[j + 1:]
+            arr2 = arr[:i] + [a + 2] + arr[i+1:j] + [b + 2] + arr[j + 1:]
+            arr5 = arr[:i] + [a + 5] + arr[i+1:j] + [b + 5] + arr[j + 1:]
+            print(arr1, arr2, arr5)
+            s += 1 + min(equal(arr1), equal(arr2), equal(arr5))
+    return s
+def maxSubsetSum(arr):
+    """
+    Find the subset of non adjacent elements of given array
+    which results in the maximum sum, and return the sum
+    """
+    pass
+    
 def matchingStrings(strings, queries):
     freq = Counter(strings)
     print(freq)
@@ -283,16 +366,204 @@ def alternatingCharacters(s):
     such that the final string has no matching adjacent chars.
     Ex. AABAAB -> ABAAB -> ABAB => 2 deletions
     """
-    i = 0
-    count = 0
-    while i < len(s):
-        j = i + 1
-        c = s[i]
-        mini_count = 0
-        while j < len(s) and s[j] == c:
-            j += 1
-            mini_count += 1
-        count += mini_count
-        s = s[:i + 1] + s[j:]
-        i = j - mini_count
-    return count
+    pass
+
+def sherlockIsValid(s):
+    """
+    A string s is considered valid iff all the chars in s appear
+    the same number of times or it is possible to remove one char
+    at one index in s and then all the chars appear the same number
+    of times.
+    Ex. s = 'abc' => {a : 1, b : 1, c : 1} => s is valid
+    """
+    freq = {}
+    
+    for c in s:
+        if c in freq:
+            freq[c] += 1
+        else:
+            freq[c] = 1
+
+    m = min(freq.values())
+    M = max(freq.values())
+
+    # all chars appear the same amount of times
+    if m == M:
+        return 'YES'
+    else:
+
+        num_min = num_max = 0
+        
+        for c in freq:
+            if freq[c] == m:
+                num_min += 1
+            elif freq[c] == M:
+                num_max += 1
+            else:
+                return 'NO'
+
+        if num_max == 1 and M - m == 1:
+            return 'YES'
+        elif num_min == 1 and m == 1:
+            return 'YES'
+
+        return 'NO'
+
+def specialPalindromeSubstrings(n, s):
+    """
+    String is said to be special palindromic if either of 2 conditions
+    are met:
+    1) all characters in string are the same
+    2) all characters except the middle one are the same
+    a special palindromic substring is any substring that is 
+    a special palindromic string. Return total number
+    of special palindromic strings in string s of length n
+    """
+    # brute force: cubic
+    # count = 0
+    # subs = []
+
+    # def check_all_and_middle(s):
+    #     if len(s) % 2 == 0:
+    #         c = s[0]
+    #         for cc in s[1:]:
+    #             if c != cc:
+    #                 return False
+    #         return True
+    #     else:
+    #         c = s[0]
+    #         mid = (len(s) - 1) // 2
+    #         for i in range(len(s)):
+    #             if i != mid and c != s[i]:
+    #                 return False
+    #         return True
+
+    # for num_chars in range(1, n + 1):
+    #     for i in range(n - num_chars + 1):
+    #         flag = True
+    #         substring = s[i : i + num_chars]
+    #         if check_all_and_middle(substring):
+    #             count += 1
+    #             subs.append(substring)
+    
+    # print(subs)
+    # return count
+
+    # better solution:
+
+
+def twoSum(nums, target):
+    """
+    given a list of numbers, return the indices of the
+    numbers(distinct) that sum to target value
+    """
+    # brute force (quadratic)
+    # for i in range(len(nums)):
+    #     for j in range(i + 1, len(nums)):
+    #         if nums[i] + nums[j] == target:
+    #             return [i, j]
+    # return None
+
+    # not brute force: (nlogn + n)
+    # num_tups = [(nums[i], i) for i in range(len(nums))]
+    # num_tups = sorted(num_tups, key= lambda x : x[0])
+    # low = 0
+    # high = len(num_tups) - 1
+
+    # while low < high:
+
+    #     s = num_tups[low][0] + num_tups[high][0]
+
+    #     if s < target:
+    #         low += 1
+    #     elif s > target:
+    #         high -= 1
+    #     else:
+    #         return [num_tups[low][1], num_tups[high][1]]
+    # return None
+
+    # better not brute force (linear)
+    indices = {nums[i] : i for i in range(len(nums))}
+    for i, nums in enumerate(nums):
+        diff = target - nums
+        if diff in indices:
+            if i != indices[diff]:
+                return [i, indices[diff]]
+    return None
+
+def whatFlavors(cost, money):
+    """
+    given amount of money you have, and the cost of flavours
+    of ice cream, return ID's of flavours.
+    Ex. money = 5, cost = [2, 1, 3, 5, 6]
+    => ID's 1 and 3 : 2 + 3 = 5
+    """
+    # quadratic 
+    ids = {}
+    for i, c in enumerate(cost):
+        if c in ids:
+            ids[c].append(i + 1)
+        else:
+            ids[c] = [i + 1]
+    print(ids)
+    for i, c in enumerate(cost):
+        diff = money - c
+        if diff in ids:
+            index = 0
+            for j in ids[diff]:
+                if j != i + 1:
+                    index = j
+            return (i + 1, index) if (i + 1) < index else (index, i + 1)
+    return None
+
+def triplets(a, b, c):
+    """
+    Gievn arrays a, b, c, find all triplets (p, q, r) with
+    p in a, q in b, r in c and p <= q and r <= q.
+    """
+
+    # extreme brute force (cubic)
+    triplets = {q : set() for q in b}
+    num_trips = 0
+    for q in triplets:
+        for p in a:
+            if p <= q:
+                for r in c:
+                    if r <= q:
+                        triplets[q].add((p, q, r))
+        num_trips += len(triplets[q])
+    # print(triplets)
+    return num_trips
+
+
+def reverseLinkedList(linky):
+    """
+    Reverse a singly linked linked list
+    """
+    # way numero uno
+    pass
+
+def lowestCommonAncestor(root, u, v):
+    """
+    Find the lowest common ancestor to nodes u and v in bst
+    with root node at root
+    """
+
+    if u == root.data or v == root.data:
+        return root
+    elif u < root.data and v < root.data:
+        return lowestCommonAncestor(root.left, u, v)
+    elif u > root.data and v > root.data:
+        return lowestCommonAncestor(root.right, u, v)
+    else:
+        return root
+    return None
+
+
+def smalllestRectangles(points):
+    """
+    Given a list of 2D points, find the collection of 4 points
+    that result in the rectangle of smallest area in the grid
+    """
+    pass
+            

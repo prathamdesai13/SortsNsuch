@@ -1,23 +1,24 @@
 from Algos import sorts
 from random import random
 from RandyDandyProblems import *
+import matplotlib.pyplot as plt
+from DataStructs.LinkedList import LinkedList
+from DataStructs.BinarySearchTree import BST
+import time
+
+def func1(t1, t2, n):
+	if n == 1:
+		return t1
+	elif n == 2:
+		return t2
+	a = func1(t1, t2, n - 1) ** 2
+	b = func1(t1, t2, n - 2)
+	return a + b
 
 if __name__ == '__main__':
 	
-	# contests = [(5, 1), (2, 1), (1, 1), (8, 1), (10, 0), (5, 0)]
-	# k = 3
-	# print(luck_balance(k, contests))
-
-	# arr = [1, 2, 3, 5, 1, 13, 3]
-	# print(minMaxRiddle(arr))
-
-	# s1 = 'fcrxzwscanmligyxyvym'
-	# s2 = 'jxwtrhvujlmrpdoqbisbwhmgpmeoke'
-	# print(makeAnagrams(s1, s2))
-
-	s = 'ABBBA'
-	print(len(s))
-	print(alternatingCharacters(s))
 	
-
-	
+	a = [1, 4, 5]
+	b = [2, 3, 3]
+	c = [1, 2, 3]
+	print(triplets(a, b, c))

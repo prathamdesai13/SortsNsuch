@@ -10,4 +10,10 @@ from LinkedList import LinkedList
 
 if __name__ == '__main__':
 
+    linky = LinkedList('A')
+    linky.insert('B')
+    linky.insert('C')
+    linky.insert('D')
+    print(linky)
+    
     pass

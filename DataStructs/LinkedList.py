@@ -7,9 +7,12 @@ class Node:
 
 class LinkedList:
 
-    def __init__(self, data):
+    def __init__(self, data, node=None):
 
-        self.head = Node(data)
+        if node:
+            self.head = node
+        else:
+            self.head = Node(data)
         
     def insert(self, data):
         

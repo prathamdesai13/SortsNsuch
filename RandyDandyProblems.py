@@ -1,9 +1,8 @@
 import math
 from collections import Counter, OrderedDict
-from Algos import swap
 from operator import itemgetter
-from DataStructs import LinkedList
-from DataStructs import BST
+
+from DataStructs import *
 
 def minimumBribes(q):
     n = len(q)
@@ -447,7 +446,7 @@ def specialPalindromeSubstrings(n, s):
     # return count
 
     # better solution:
-
+    pass
 
 def twoSum(nums, target):
     """
@@ -549,9 +548,30 @@ def reverseLinkedList(linky):
     """
     Reverse a singly linked linked list
     """
-    # way numero uno
-    pass
+    # way numero uno: (iterative)
+    # nodes = []
+    # curr = linky.head
+    # while curr:
+    #     nodes.append(curr.data)
+    #     curr = curr.next
+    # rev_linky = LinkedList(nodes.pop())
+    # curr = rev_linky.head
+    # while nodes:
+    #     curr.next = Node(nodes.pop())
+    #     curr = curr.next
+    # return rev_linky
 
+    # lmao reverse linked list in place
+    curr_node = linky.head
+    prev_node = None
+    while curr_node:
+        next_node = curr_node.next
+        curr_node.next = prev_node
+        prev_node = curr_node
+        curr_node = next_node
+    rev_linky = LinkedList(None, node=prev_node)
+    return rev_linky
+    
 def lowestCommonAncestor(root, u, v):
     """
     Find the lowest common ancestor to nodes u and v in bst

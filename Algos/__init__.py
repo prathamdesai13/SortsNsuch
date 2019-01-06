@@ -1,2 +1,2 @@
-from sorts import *
-from search import *
+from .search import *
+from .sorts import *

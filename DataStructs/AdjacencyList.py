@@ -7,11 +7,18 @@ class AdjacencyList:
         self.graph = self.generate_graph()
     
     def generate_graph(self):
-        graph = { v : [] for v in self.nodes}
-        for v in graph:
-            for edge in self.edges:
-                if v == edge[0]:
-                    graph[v].append(edge[1])
+        
+        graph = {v : [] for v in self.nodes}
+        for e in self.edges:
+            u, v = e
+            if u in graph:
+                graph[u].append(v)
+            else:
+                graph[u] = []
+            if v in graph:
+                graph[v].append(u)
+            else:
+                graph[v] = []
         return graph
 
     def add_edge(self, edge):
@@ -98,5 +105,6 @@ class AdjacencyList:
 
         if len(spanning_tree) == len(self.nodes):
             return spanning_tree
+        print("This graph is not connected, and so no spanning tree exists!")
         return False
 

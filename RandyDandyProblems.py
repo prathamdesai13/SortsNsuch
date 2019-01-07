@@ -69,7 +69,7 @@ def sherlockAndAnagrams(s):
             count += substrings[sub]
     return count
 
-def getWays(n, c):
+def coinChange(n, c):
     """
     How many ways can you make change for a particular value n using
     m coins of distinct denomination.
@@ -148,7 +148,9 @@ def weirdFib(t1, t2, n, memo=None):
     return table[n - 1]
 
 def equal(arr):
-
+    """
+    Still need to finish this function and add explanation for the code
+    """
     first = arr[0]
     flag = True
     for e in arr[1:]:
@@ -571,7 +573,7 @@ def reverseLinkedList(linky):
         curr_node = next_node
     rev_linky = LinkedList(None, node=prev_node)
     return rev_linky
-    
+
 def lowestCommonAncestor(root, u, v):
     """
     Find the lowest common ancestor to nodes u and v in bst
@@ -588,6 +590,41 @@ def lowestCommonAncestor(root, u, v):
         return root
     return None
 
+def shortestReach(n, m, edges, s):
+    """
+    Given an undirected graph with same edge weights (each edge has a weight of 6), 
+    and each of the nodes are labelled consecutively. Given a starting node, 
+    find the shortest distance to each of the other nodes from it.
+    Ex. n = 5, m = 3, edges = {[1, 2], [1, 3], [3, 4]}, s = 1
+    => distances from node s = 1 to nodes 2, 3, 4, 5: [1, 1, 2, -1]
+    """
+
+    nodes = [i for i in range(1, n + 1)]
+    graph = AdjacencyList(nodes, edges).graph
+    visited = {i : False for i in range(1, n + 1)}
+    distances = {i : -1 for i in range(1, n + 1)}
+    
+    print(graph)
+
+    root_level = [s]
+    q = [root_level]
+    curr_dist = 0
+    while q:
+        print(visited)
+        level = q[0]
+        del q[0]
+        next_level = []
+        for node in level:
+            if not visited[node]:
+                next_level += graph[node]
+                visited[node] = True
+                distances[node] = curr_dist
+        if next_level:
+            q.append(next_level)
+        curr_dist += 6
+
+    dists = list(distances.values())
+    return dists[:s - 1] + dists[s : ]
 
 def smalllestRectangles(points):
     """

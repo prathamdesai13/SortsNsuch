@@ -1,11 +1,12 @@
 
 class AdjacencyList:
 
-    def __init__(self, nodes, edges):
+    def __init__(self, nodes, edges,  weights=None):
         self.nodes = nodes
         self.edges = edges
+        self.weights = weights
         self.graph = self.generate_graph()
-    
+
     def generate_graph(self):
         
         graph = {v : [] for v in self.nodes}
@@ -108,3 +109,38 @@ class AdjacencyList:
         print("This graph is not connected, and so no spanning tree exists!")
         return False
 
+    def shortest_path(self, source, end):
+        """
+        Dijkstras algorithm to find shortest path between
+        source node and end node, given weights. If no weights
+        are specified for this graph, then edge weights of 1 are
+        assigned to every edge.
+        """
+        weights_flag = False
+        if self.weights:
+            weights_flag = True
+
+        distance = {v : float('inf') for v in self.graph}
+        distance[source] = 0
+
+        visited = {v : False for v in self.graph}
+        q = [v for v in self.graph]
+
+        while q:
+
+            v = q[0]
+            del q[0]
+
+            if not visited[v]:
+                visited[v] = True
+                for u in self.graph[v]:
+                    if weights_flag:
+                        weight_vu = self.weights[(u, v)]
+                    else:
+                        weight_vu = 1
+                    if distance[v] + weight_vu < distance[u]:
+                        distance[u] = distance[v] + weight_vu
+        print(distance)
+        return distance[end]
+
+    

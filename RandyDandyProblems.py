@@ -626,6 +626,7 @@ def shortestReach(n, m, edges, s):
     dists = list(distances.values())
     return dists[:s - 1] + dists[s : ]
 
+
 def smalllestRectangles(points):
     """
     Given a list of 2D points, find the collection of 4 points

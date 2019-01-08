@@ -625,8 +625,47 @@ def shortestReach(n, m, edges, s):
 
     dists = list(distances.values())
     return dists[:s - 1] + dists[s : ]
+    
+def shortestReachPartTwo(n, edges, s):
+    """
+    Given an undirected graph with non negative edge weights
+    and each of the nodes are labelled consecutively, find the length
+    of the shortest paths from a source node to all other nodes. Assign
+    -1 to any unreachable nodes.
+    Ex. n = 5, edges = [[1, 2, 5], [2, 3, 6], [3, 4, 2], [1, 3, 15]], s = 1
+     => distances = [1 -> 2 : 5, 1 -> 3 : 11, 1 -> 4 : 13, 1 -> 5 : -1]
+    """
 
+    nodes = [i for i in range(1, n + 1)]
+    q = [v for v in nodes]
+    visited = {v : False for v in nodes}
+    weights = {(e[0], e[1]) : e[2] for e in edges}
+    for edge in edges:
+        
+        if (edge[1], edge[0]) not in weights:
+            weights[(edge[1], edge[0])] = weights[(edge[0], edge[1])]
 
+    graph = AdjacencyList(nodes, list(weights.keys())).graph
+    distances = {v : float('inf') for v in nodes}
+    distances[s] = 0
+    
+    while q:
+        v = q[0]
+        del q[0]
+
+        if not visited[v]:
+            visited[v] = True
+            for u in graph[v]:
+                if distances[v] + weights[(v, u)] < distances[u]:
+                    distances[u] = distances[v] + weights[(v, u)]
+          
+    for v in distances:
+        if distances[v] == float('inf'):
+            distances[v] = -1
+
+    distances = list(distances.values())
+    return distances[:s - 1] + distances[s:]
+    pass
 def smalllestRectangles(points):
     """
     Given a list of 2D points, find the collection of 4 points

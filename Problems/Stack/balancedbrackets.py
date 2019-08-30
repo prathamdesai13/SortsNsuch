@@ -21,7 +21,7 @@ def isBalanced(s):
             stack_size += 1
         else:
             pop_val = stack[-1]
-            if bracket != mapper[pop_val]:
+            if bracket != mapper[pop_val] or stack_size == 0:
                 return False
             del stack[-1]
             stack_size -= 1
@@ -30,5 +30,5 @@ def isBalanced(s):
     return False
 
 if __name__ == '__main__':
-    s = '{[(])}'
+    s = '{{}{}}{}[][]{}{{{[]}[]}}'
     print(isBalanced(s))
